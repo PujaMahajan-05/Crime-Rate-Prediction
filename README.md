@@ -1,0 +1,1 @@
+Crime Rate Prediction is a machine learning project that analyzes past crime data to predict crime rates in different areas. It helps identify crime patterns and supports better planning for public safety and crime prevention.
