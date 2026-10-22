@@ -1,0 +1,89 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user'])) {
+  header("Location: index.html");
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Study Mood Detector</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Welcome, <?php echo $_SESSION['user']; ?> 👋</h2>
+
+  <h3>Study Mood Detector 🎯</h3>
+
+  <!-- Mood Input -->
+  <input id="mood" placeholder="Enter your mood">
+  <button onclick="detectMood()">Detect</button>
+
+  <!-- Result -->
+  <p id="result"></p>
+
+  <!-- Timer -->
+  <h3>Pomodoro ⏳</h3>
+  <p id="timer">25:00</p>
+  <button onclick="startTimer()">Start</button>
+
+  <!-- History -->
+  <h3>History 📊</h3>
+  <ul id="history"></ul>
+
+  <br>
+  <a href="logout.php">Logout</a>
+</div>
+
+<script>
+let historyList = [];
+
+function detectMood() {
+  let mood = document.getElementById("mood").value.toLowerCase();
+  let result = "";
+
+  if (mood.includes("tired")) {
+    result = "😴 Take rest + music";
+  } else if (mood.includes("focused")) {
+    result = "🔥 Study hard";
+  } else if (mood.includes("stressed")) {
+    result = "😌 Relax";
+  } else {
+    result = "💪 Stay consistent";
+  }
+
+  document.getElementById("result").innerText = result;
+
+  // Save history
+  historyList.push(mood + " → " + result);
+  let list = document.getElementById("history");
+  list.innerHTML = "";
+
+  historyList.forEach(item => {
+    let li = document.createElement("li");
+    li.innerText = item;
+    list.appendChild(li);
+  });
+}
+
+// Timer
+let time = 1500;
+function startTimer() {
+  setInterval(() => {
+    if (time > 0) {
+      time--;
+      let min = Math.floor(time/60);
+      let sec = time % 60;
+      document.getElementById("timer").innerText =
+        min + ":" + (sec<10?"0":"") + sec;
+    }
+  }, 1000);
+}
+</script>
+
+</body>
+</html>
